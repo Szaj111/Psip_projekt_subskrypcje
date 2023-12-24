@@ -67,5 +67,18 @@ def pokaz_liste_uzytkownikow():
     result= connection.execute(sql_query_1).all()
     for user in result:
      #   print(user[0] + " nick " +user[3]+" jest z miasta "+ user[1] + " liczba jego postów - "+ str(user[2])   )
-        print("Informacje na temat użytkownika: " +"Nick: " + user[0] + " Imię: " + user[1], "Rodzaj subskrypcji: " + user[3] + " Najczęściej oglądane kategorie: " + user[5] + " Obejrzane filmy: " + user[5])
-pokaz_liste_uzytkownikow()
+        print("Informacje na temat użytkownika: " +"Nick: " + user[0] + " Imię: " + user[1], "Rodzaj subskrypcji: "
+              + user[3] + " Najczęściej oglądane kategorie: " + user[5] + " Obejrzane filmy: " + user[5])
+#pokaz_liste_uzytkownikow()
+
+def usun_uzytkownika_bazadanych(nick):
+    query_text = "DELETE FROM public.my_table my_table WHERE  nick = :nick"
+    sql_query_1 = sqlalchemy.text(query_text)
+    connection.execute(sql_query_1, {'nick':nick})
+    connection.commit()
+
+def usun_uzytkownika():
+    nick = input ("Podaj nick uzytkownika do usuniecia - ")
+    usun_uzytkownika_bazadanych(nick)
+
+usun_uzytkownika()
