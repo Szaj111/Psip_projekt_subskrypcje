@@ -97,4 +97,4 @@ def modyfikuj_uzytkownika():
     new_movies_watched = input('Podaj nazwe obejrzanego filmu: ')
     new_film_category = input('Podaj kategorie obejrzanych filmów: ')
     modyfikuj_uzytkownika_bazadanych(nick,new_name,new_city,subscription_type, new_movies_watched, new_film_category)
-modyfikuj_uzytkownika()
+#modyfikuj_uzytkownika()
