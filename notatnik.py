@@ -44,6 +44,12 @@ def dodaj_użytkownika():
     film_category = input('Podaj rodzaj obejrzanego filmu - ')
     movies_watched = input('Podaj filmy oberzane przez użytkownika - ')
 
+    if not film_category.strip():
+        film_category = "Brak danych"
+
+    if not movies_watched.strip():
+        movies_watched = "Brak danych"
+
     sql_query = sqlalchemy.text("SELECT * FROM my_table WHERE nick=:nick")
 
     result = connection.execute(sql_query, {'nick': nick}).all()
@@ -54,10 +60,12 @@ def dodaj_użytkownika():
         print('Podany nick już istnieje')
 
 
-dodaj_użytkownika()
+#dodaj_użytkownika()
 
-# def pokaz_liste_uzytkownikow():
-#     sql_query_1 = sqlalchemy.text(f"SELECT * FROM my_table")
-#     result= connection.execute(sql_query_1).all()
-#     for user in result:
-#         print(user[0] + " nick " +user[3]+" jest z miasta "+ user[1] + " liczba jego postów - "+ str(user[2])   )
+def pokaz_liste_uzytkownikow():
+    sql_query_1 = sqlalchemy.text(f"SELECT * FROM my_table")
+    result= connection.execute(sql_query_1).all()
+    for user in result:
+     #   print(user[0] + " nick " +user[3]+" jest z miasta "+ user[1] + " liczba jego postów - "+ str(user[2])   )
+        print("Informacje na temat użytkownika: " +"Nick: " + user[0] + " Imię: " + user[1], "Rodzaj subskrypcji: " + user[3] + " Najczęściej oglądane kategorie: " + user[5] + " Obejrzane filmy: " + user[5])
+pokaz_liste_uzytkownikow()
