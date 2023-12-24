@@ -1,3 +1,3 @@
 from Utiles.my_function import gui
-
-gui()
+from dane import users_list
+gui(users_list)
