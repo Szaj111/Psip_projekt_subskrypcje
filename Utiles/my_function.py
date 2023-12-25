@@ -64,7 +64,7 @@ def pokaz_liste_uzytkownikow():
     result= connection.execute(sql_query_1).all()
     for user in result:
      #   print(user[0] + " nick " +user[3]+" jest z miasta "+ user[1] + " liczba jego postów - "+ str(user[2])   )
-        print("Informacje na temat użytkownika: " +"Nick: " + user[0] + " Imię: " + user[1], "Rodzaj subskrypcji: "
+        print("Informacje na temat użytkownika: " +"Nick: " + user[0] + " Imię: " + user[1], "Rodzaj subskrypcji: " +"Miejscowość: " +user[2]
               + user[3] + " Najczęściej oglądane kategorie: " + user[5] + " Obejrzane filmy: " + user[5])
 
 
@@ -109,12 +109,14 @@ def get_coordinates_of_(city:str)->list[float, float]:
     response_html_longitude = float(response_html_longitude.replace(',','.'))
 
     return [response_html_latitude, response_html_longitude]
+    print(response_html_latitude, response_html_longitude)
+
 
 def get_map_one_user():
     nick = input('Podaj nick uzytkownika do generowania mapy - ')
     sql_query_1 = sqlalchemy.text(f"SELECT * FROM my_table WHERE nick = '{nick}'")
     result = connection.execute(sql_query_1).first()
-    city_str = result[1]
+    city_str = result[2]
 
     city =get_coordinates_of_(city_str)
     map = folium.Map(
@@ -124,10 +126,12 @@ def get_map_one_user():
     )
     folium.Marker(
        location=city,
-       popup=f"Tu rządzi_{result[0]}"
-             f"Liczba postów{str(result[2])}"
+        popup=f"Użytkownik - {result[0]}\n"
+              f"Miejscowość - {str(result[2])}\n"
+              f"Rodzaj subskrypcji - {result[3]}\n"
     ).add_to(map)
     map.save(f"mapka_{result[0]}.html")
+
 def get_map_of():
     sql_query_1 = sqlalchemy.text("SELECT * FROM my_table")
     result = connection.execute(sql_query_1).all()
@@ -139,52 +143,54 @@ def get_map_of():
     )
 
     for user in result:
-        city_str = user[1]
+        city_str = user[2]
         city = get_coordinates_of_(city_str)
 
         folium.Marker(
             location=city,
-            popup=f'Użytkownik: {user[0]}'
-                  f' Liczba postów: {str(user[2])}'
+            popup= f"Użytkownik: {user[0]}\n"
+                   f"Miejscowość: {city_str}\n"
+                   f"Rodzaj subskrypcji: {user[3]}\n"
         ).add_to(map)
 
     map.save('mapka.html')
+get_map_of()
 
 
 def gui(users_list:list)->None:
     while True:
-        print( f'Menu: \n' 
+        print( f'Menu: \n'
             f'0: Wyjdz \n'
             f'1: Wyświetl uztkowników \n'
-            f'2: Dodaj uzytkownika \n'
-            f'3: Usun uzytkownika \n'
-            f'4: Modyfikuj uzytkownika \n'
-            f'5: Wygeneruj mape z uzytkownikiem \n'
-            f'6: Wygeneruj mape z uzytkownikami \n'
+            f'2: Dodaj użytkownika \n'
+            f'3: Usuń uńytkownika \n'
+            f'4: Modyfikuj użytkownika \n'
+            f'5: Wygeneruj mape z użytkownikiem \n'
+            f'6: Wygeneruj mape z użytkownikami \n'
            )
-        menu_option = input("Podaj funkcje do wywolania - ")
+        menu_option = input("Podaj funkcje do wywołania - ")
         print(f'Wybrano funkcje {menu_option}')
 
         match menu_option:
             case "0":
-                print("Koncze prace")
+                print("Kończę prace")
                 break
             case "1":
-                print("Wyswietlam uzytkownikow")
+                print("Wyswietlam użytkowników")
                 pokaz_liste_uzytkownikow()
             case "2":
-                print("Dodaje uzytkownika")
+                print("Dodaje użytkownika")
                 dodaj_użytkownika()
             case "3":
-                print("Usuwam uzytkownika")
+                print("Usuwam użytkownika")
                 usun_uzytkownika()
             case "4":
-                print("Modyfikuj uzytkownika")
+                print("Modyfikuj użytkownika")
                 modyfikuj_uzytkownika()
             case '5':
-                print('Rysuj mape z uzytkownikiem')
+                print('Rysuję mape z użytkownikiem')
                 get_map_one_user()
 
             case '6':
-                print("Rysuje mape z uzytkownikami")
+                print("Rysuje mape z użytkownikami")
                 get_map_of()
