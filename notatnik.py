@@ -98,3 +98,42 @@ def modyfikuj_uzytkownika():
     new_film_category = input('Podaj kategorie obejrzanych filmów: ')
     modyfikuj_uzytkownika_bazadanych(nick,new_name,new_city,subscription_type, new_movies_watched, new_film_category)
 #modyfikuj_uzytkownika()
+
+def get_coordinates_of_(city:str)->list[float, float]:
+
+    adres_URL = f'https://pl.wikipedia.org/wiki/{city}'
+
+    response = requests.get(url=adres_URL)
+    response_html = BeautifulSoup(response.text,'html.parser')
+
+
+    response_html_latitude = response_html.select('.latitude')[1].text
+    response_html_latitude = float(response_html_latitude.replace(',','.'))
+
+    response_html_longitude = response_html.select('.longitude')[1].text
+    response_html_longitude = float(response_html_longitude.replace(',','.'))
+
+    return [response_html_latitude, response_html_longitude]
+    print(response_html_latitude, response_html_longitude)
+
+
+def get_map_one_user():
+    nick = input('Podaj nick uzytkownika do generowania mapy - ')
+    sql_query_1 = sqlalchemy.text(f"SELECT * FROM my_table WHERE nick = '{nick}'")
+    result = connection.execute(sql_query_1).first()
+    city_str = result[2]
+
+    city =get_coordinates_of_(city_str)
+    map = folium.Map(
+        location = city,
+        tiles="OpenStreetMap",
+        zoom_start=14
+    )
+    folium.Marker(
+       location=city,
+       popup=f"Tu rządzi_{result[0]}"
+             f"Liczba postów{str(result[2])}"
+    ).add_to(map)
+    map.save(f"mapka_{result[0]}.html")
+
+get_map_one_user()
