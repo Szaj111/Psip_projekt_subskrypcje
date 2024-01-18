@@ -17,23 +17,23 @@ engine = sqlalchemy.create_engine(db_params)
 
 connection = engine.connect()
 #dodawanie uzytkownika
-def dodaj_uzytkownika_bazadanych(name, city, nick, subscription, film_category, movies_watched):
-    query_text = """
-    INSERT INTO public.my_table (nick, name, city, subscription, film_category, movies_watched) 
-    VALUES (:nick, :name, :city, :subscription, :film_category, :movies_watched)
-    """
-    sql_query = sqlalchemy.text(query_text)
-
-    connection.execute(sql_query, {
-        'nick': nick,
-        'name': name,
-        'city': city,
-        'subscription': subscription,
-        'film_category': film_category,
-        'movies_watched': movies_watched
-    })
-
-    connection.commit()
+# def dodaj_uzytkownika_bazadanych(name, city, nick, subscription, film_category, movies_watched):
+#     query_text = """
+#     INSERT INTO public.my_table (nick, name, city, subscription, film_category, movies_watched)
+#     VALUES (:nick, :name, :city, :subscription, :film_category, :movies_watched)
+#     """
+#     sql_query = sqlalchemy.text(query_text)
+#
+#     connection.execute(sql_query, {
+#         'nick': nick,
+#         'name': name,
+#         'city': city,
+#         'subscription': subscription,
+#         'film_category': film_category,
+#         'movies_watched': movies_watched
+#     })
+#
+#     connection.commit()
 
 # def dodaj_użytkownika():
 #     nick = input('Podaj nick użytkownika - ')
