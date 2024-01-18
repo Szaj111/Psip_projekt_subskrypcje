@@ -35,22 +35,22 @@ def dodaj_uzytkownika_bazadanych(name, city, nick, subscription, film_category, 
 
     connection.commit()
 
-def dodaj_użytkownika():
-    nick = input('Podaj nick użytkownika - ')
-    name = input('Podaj imię - ')
-    city = input('Podaj miasto - ')
-    subscription = input('Podaj rodzaj subskrypcji - ')
-
-
-    sql_query = sqlalchemy.text("SELECT * FROM my_table WHERE nick=:nick")
-
-    result = connection.execute(sql_query, {'nick': nick}).all()
-
-    if not result:
-        dodaj_uzytkownika_bazadanych(name, city, nick, subscription)
-    else:
-        print('Podany nick już istnieje')
-        dodaj_użytkownika()
+# def dodaj_użytkownika():
+#     nick = input('Podaj nick użytkownika - ')
+#     name = input('Podaj imię - ')
+#     city = input('Podaj miasto - ')
+#     subscription = input('Podaj rodzaj subskrypcji - ')
+#
+#
+#     sql_query = sqlalchemy.text("SELECT * FROM my_table WHERE nick=:nick")
+#
+#     result = connection.execute(sql_query, {'nick': nick}).all()
+#
+#     if not result:
+#         dodaj_uzytkownika_bazadanych(name, city, nick, subscription)
+#     else:
+#         print('Podany nick już istnieje')
+#         dodaj_użytkownika()
 #WYSWIETLANIE LISTY UZYTKOWNIKOW
 def pokaz_liste_uzytkownikow():
     sql_query_1 = sqlalchemy.text(f"SELECT * FROM my_table")
@@ -167,7 +167,7 @@ def gui(users_list:list)->None:
                 pokaz_liste_uzytkownikow()
             case "2":
                 print("Dodaje uzytkownika")
-                dodaj_użytkownika()
+                # dodaj_użytkownika()
             case "3":
                 print("Usuwam uzytkownika")
                 usun_uzytkownika()
