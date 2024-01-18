@@ -18,7 +18,6 @@ class Movie(Base):
 
 class Movies_watched(Base):
     __tablename__ = "movies_watched2323"
-    id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.Sequence("movies_watched2323"), autoincrement=True,primary_key=True)
+    id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.Sequence("movies_watched"), autoincrement=True,primary_key=True)
     movie_id = sqlalchemy.Column(sqlalchemy.Integer)
-    category = sqlalchemy.Column(sqlalchemy.Integer)
     user_id = sqlalchemy.Column(sqlalchemy.Integer)
