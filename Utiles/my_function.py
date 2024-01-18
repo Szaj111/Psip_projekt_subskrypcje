@@ -42,18 +42,12 @@ def dodaj_użytkownika():
     subscription = input('Podaj rodzaj subskrypcji - ')
 
 
-    if not film_category.strip():
-        film_category = "Brak danych"
-
-    if not movies_watched.strip():
-        movies_watched = "Brak danych"
-
     sql_query = sqlalchemy.text("SELECT * FROM my_table WHERE nick=:nick")
 
     result = connection.execute(sql_query, {'nick': nick}).all()
 
     if not result:
-        dodaj_uzytkownika_bazadanych(name, city, nick, subscription, film_category, movies_watched)
+        dodaj_uzytkownika_bazadanych(name, city, nick, subscription)
     else:
         print('Podany nick już istnieje')
         dodaj_użytkownika()

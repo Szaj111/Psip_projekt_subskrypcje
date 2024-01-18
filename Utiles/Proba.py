@@ -17,5 +17,6 @@ engine = sqlalchemy.create_engine(db_params)
 connection = engine.connect()
 
 def dodaj_obejrzany_film():
+
     movie_name = input("Podaj nazwe obejrzanego filmu: ")
     movie_category = input("Podaj nawe kategorii filmu: ")

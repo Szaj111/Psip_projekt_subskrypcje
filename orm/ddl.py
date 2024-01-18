@@ -1,4 +1,3 @@
-
 import sqlalchemy.orm
 import sqlalchemy
 Base = sqlalchemy.orm.declarative_base()
