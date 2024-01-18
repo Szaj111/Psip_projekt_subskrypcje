@@ -40,8 +40,7 @@ def dodaj_użytkownika():
     name = input('Podaj imię - ')
     city = input('Podaj miasto - ')
     subscription = input('Podaj rodzaj subskrypcji - ')
-    film_category = input('Podaj rodzaj obejrzanego filmu - ')
-    movies_watched = input('Podaj filmy oberzane przez użytkownika - ')
+
 
     if not film_category.strip():
         film_category = "Brak danych"

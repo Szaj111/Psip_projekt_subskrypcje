@@ -136,4 +136,136 @@ def get_map_one_user():
     ).add_to(map)
     map.save(f"mapka_{result[0]}.html")
 
-get_map_one_user()
+#get_map_one_user()
+
+class Movie:
+    def __init__(self, movie_name):
+        self.movie_name = movie_name
+
+class Category:
+    def __init__(self, category_name, movies):
+        self.category_name = category_name
+        self.movies = [Movie(movie["movie_name"]) for movie in movies]
+
+
+horrors = Category("Horror", [
+    {"movie_name": "The Conjuring"},
+    {"movie_name": "The Ring"},
+    {"movie_name": "The Conjuring 2"},
+    {"movie_name": "Insidious"},
+    {"movie_name": "SAW"},
+])
+
+actions = Category("Action", [
+    {"movie_name": "Rambo"},
+    {"movie_name": "Fast & Furious"},
+    {"movie_name": "The Dark Knight"},
+    {"movie_name": "Top Gun: Maverick"},
+    {"movie_name": "Mission: Impossible"},
+])
+
+comedy = Category("Comedy", [
+    {"movie_name": "Amercian Pie"},
+    {"movie_name": "Kac Vegas"},
+    {"movie_name": "Johnny English"},
+    {"movie_name": "Kiler"},
+    {"movie_name": "Życie Pchora"},
+])
+
+sci_fictions = Category("Sci-Fi", [
+    {"movie_name": "Matrix"},
+    {"movie_name": "Terminator"},
+    {"movie_name": "Star Wars"},
+    {"movie_name": "Predator"},
+    {"movie_name": "Alien"},
+])
+
+class User:
+    def __init__(self, nick, name,city, subscrpition, film_category, movies_watched):
+        self.nick = nick
+        self.name = name
+        self.city = city
+        self.subscrpition = subscrpition
+        self.movies_watched = movies_watched
+        self.film_category = film_category
+        self.movies_watched = [Movie(movie_name) for movie_name in movies_watched]
+
+def wybierz_film(movies):
+    print("Dostępne filmy:")
+    for i, movie in enumerate(movies, 1):
+        print(f"{i}: {movie.movie_name}")
+
+    while True:
+        wybor_filmu = input("Wybierz numer filmu (lub '0' aby wrócić): ")
+        if wybor_filmu == "0":
+            return None
+        try:
+            index = int(wybor_filmu)
+            if 1 <= index <= len(movies):
+                return movies[index - 1]
+            else:
+                print("Niepoprawny numer filmu. Spróbuj ponownie.")
+        except ValueError:
+            print("Niepoprawny numer filmu. Spróbuj ponownie.")
+
+
+
+def dodaj_film_do_obserwowanych(nick, film_category, movies_watched):
+    query_text = """
+    INSERT INTO public.my_table (nick, film_category, movies_watched)
+    VALUES (:nick, :movies_watched, :film_category)
+    """
+    sql_query = sqlalchemy.text(query_text)
+    connection.execute(sql_query, nick=nick, movies_watched=movies_watched.movie_name, film_category=film_category.category_name)
+    connection.commit()
+
+def add_watched_movie():
+    nick = input("Podaj nick użytkownika: ")
+    print("Dostępne kategorie filmowe: ")
+
+    while True:
+        print('Dodaj film do listy obejrzanych: \n'
+              '0: Horrory \n'
+              '1: Akcja \n'
+              '2: Komedie \n'
+              '3: Sci-fi \n'
+              '4: Wyjście \n'
+
+        )
+        menu_films = input("Wybierz kategorię filmu (lub 'q' aby zakończyć): ")
+        print(f'Wybrano kategorię nr {menu_films}')
+
+        if menu_films == 'q':
+            break
+
+        try:
+            menu_films = int(menu_films)
+        except ValueError:
+            print("Niepoprawny wybór kategorii.")
+            continue
+
+        if 0 <= menu_films <= 3:
+            chosen_category = None
+            if menu_films == 0:
+                print("Horrory: ")
+                chosen_category = horrors
+            elif menu_films == 1:
+                chosen_category = actions
+            elif menu_films == 2:
+                chosen_category = comedy
+            elif menu_films == 3:
+                chosen_category = sci_fictions
+
+            if chosen_category:
+                chosen_movie = wybierz_film(chosen_category.movies)
+                if chosen_movie:
+                    print(f'Dodano film do obejrzanych: {chosen_movie.movie_name} z kategorii {chosen_category.category_name}')
+                    dodaj_film_do_obserwowanych(nick, chosen_movie, chosen_category)
+                else:
+                    print('Anulowano dodawanie filmu.')
+            else:
+                print("Niepoprawny wybór kategorii.")
+        else:
+            print("Niepoprawny wybór kategorii.")
+
+add_watched_movie()
