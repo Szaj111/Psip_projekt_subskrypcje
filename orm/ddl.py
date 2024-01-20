@@ -11,6 +11,7 @@ class User(Base):
     city = sqlalchemy.Column(sqlalchemy.String)
 
 
+
 class Movie(Base):
     __tablename__ = "movies"
     id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.Sequence("movie2323"), autoincrement=True,primary_key=True)
@@ -25,5 +26,6 @@ class Movies_watched(Base):
 
 class Subscription(Base):
     __tablename__ = "subscription2323"
-    id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.Sequence("subscription2323"), autoincrement=True, primary_key=True)
+    id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.Sequence("subscription"), autoincrement=True, primary_key=True)
+    subscription = sqlalchemy.Column(sqlalchemy.String)
     movie_id = sqlalchemy.Column(sqlalchemy.Integer)
