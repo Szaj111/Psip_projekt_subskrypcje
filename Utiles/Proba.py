@@ -49,6 +49,7 @@ def usuń_film_baza_danych (movie_name):
 
 
 
+
 #wyświetl_wszystkie_filmy()
 # movie_list = session.query(Movie).filter(Movie.category=="Horror").all() WYŚWIETLANIE PO FILTRZE
 # movie_list[0].movie_name="Zycie pchora" zamiana
