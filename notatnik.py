@@ -268,4 +268,3 @@ def add_watched_movie():
         else:
             print("Niepoprawny wybór kategorii.")
 
-add_watched_movie()

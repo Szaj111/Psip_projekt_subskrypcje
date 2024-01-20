@@ -8,6 +8,7 @@ class User(Base):
     nick = sqlalchemy.Column(sqlalchemy.String, unique=True)
     name = sqlalchemy.Column(sqlalchemy.String)
     subscription = sqlalchemy.Column(sqlalchemy.String)
+    city = sqlalchemy.Column(sqlalchemy.String)
 
 
 class Movie(Base):
@@ -21,3 +22,8 @@ class Movies_watched(Base):
     id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.Sequence("movies_watched"), autoincrement=True,primary_key=True)
     movie_id = sqlalchemy.Column(sqlalchemy.Integer)
     user_id = sqlalchemy.Column(sqlalchemy.Integer)
+
+class Subscription(Base):
+    __tablename__ = "subscription2323"
+    id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.Sequence("subscription2323"), autoincrement=True, primary_key=True)
+    movie_id = sqlalchemy.Column(sqlalchemy.Integer)
