@@ -2,9 +2,15 @@ import requests
 import folium
 import sqlalchemy
 from bs4 import BeautifulSoup
+from dane import Horrors , Actions , Comedy , Sci_Fictions
 
-# from notatnik import Category
-from orm.ddl import Movie, Base , User
+
+
+
+
+
+
+from orm.ddl import Movie, Base , User, Subscription
 from sqlalchemy.orm import sessionmaker
 db_params = sqlalchemy.URL.create(
     drivername='postgresql+psycopg2',
@@ -19,7 +25,7 @@ engine = sqlalchemy.create_engine(db_params)
 
 connection = engine.connect()
 # Base.metadata.drop_all(bind=engine)
-# Base.metadata.create_all(bind=engine)
+Base.metadata.create_all(bind=engine)
 Session = sessionmaker(bind=engine)
 session = Session()
 
@@ -34,6 +40,34 @@ def dodaj_film():
     dodaj_film_baza_danych(movie_name,category)
 #dodaj_film()
 #^ działa
+
+
+# # Horrors
+# for horror_movie in Horrors:
+#     nazwa = horror_movie.get("movie_name")
+#     kategoria = "Horror"
+#     dodaj_film_baza_danych(nazwa, kategoria)
+#
+# # Actions
+# for action_movie in Actions:
+#     nazwa = action_movie.get("movie_name")
+#     kategoria = "Action"
+#     dodaj_film_baza_danych(nazwa, kategoria)
+#
+# # Comedy
+# for comedy_movie in Comedy:
+#     nazwa = comedy_movie.get("movie_name")
+#     kategoria = "Comedy"
+#     dodaj_film_baza_danych(nazwa, kategoria)
+#
+# # Sci_Fictions
+# for sci_fi_movie in Sci_Fictions:
+#     nazwa = sci_fi_movie.get("movie_name")
+#     kategoria = "Sci-Fi"
+#     dodaj_film_baza_danych(nazwa, kategoria)
+
+
+
 
 
 #--------wyświetalnie listy filmów wraz z kategoriami- GIT----------
@@ -93,4 +127,55 @@ def modyfikuj_film():
 
 #modyfikuj_film()
 
-dodaj_film()
+dodaj_film_baza_danych("Mission: Impossible","Actions")
+
+def dodaj_rodzaj_subskrypcji_baza_danych(subcricption):
+    sub = Subscription(subcription=subcricption,)
+    session.add(sub)
+    session.commit()
+
+
+
+
+#---------------dodawanie użytkowniak_________
+def dodaj_użytkownika_baza_danych(nick, name, subscription, city):
+    user = User(nick=nick, name=name, subscription=subscription, city= city)
+    session.add(user)
+    session.commit()
+def dodaj_użytkownika():
+    nick = input('Podaj nick użytkownika: ')
+    name = input('Podaj imie uzytkwonika: ')
+    subscription = input('Podaj subskrypcje uzytkownika: ')
+    city = input('Podaj miasto uzytkownika: ')
+    dodaj_użytkownika_baza_danych(nick, name, subscription, city)
+#dodaj_użytkownika()
+
+def wyświetl_użytkownika_baza_danych():
+    users_list =session.query(User).all()
+    session.commit()
+    for user in users_list:
+        print("Nick: " + user.nick,"Imię: " + user.name,"Subskrypcja: " + user.subscription, "Miasto: " + user.city)
+#wyświetl_dodaj_użytkownika_baza_danych()
+def usuń_użytkownika_baza_danych(nick):
+    while True:
+        nick_del = session.query(User).filter_by(nick=nick).first()
+        if nick == "1":
+            break
+        if nick_del:
+            session.delete(nick_del)
+            session.commit()
+            print(f'Użytkownik {nick} został usunięty')
+            break
+        else:
+            print(f'Użytkownik {nick} nie istnieje')
+            nick = input('Podaj poprawna nazwe filmu: \n'
+                  'Wpisz - 1 aby wyjść \n')
+            if nick == "1":
+                break
+def usuń_użytkownika():
+    wyświetl_użytkownika_baza_danych()
+    user_to_delete = input("Podaj nick użytkownika do usunięcia - ")
+    usuń_użytkownika_baza_danych(user_to_delete)
+#usuń_użytkownika()
+def modyfikuj_użytkownika():
+    wyświetl_użytkownika_baza_danych()
