@@ -11,8 +11,6 @@ class User(Base):
     city = sqlalchemy.Column(sqlalchemy.String)
 
 
-
-
 class Movie(Base):
     __tablename__ = "movies"
     id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.Sequence("movie2323"), autoincrement=True,primary_key=True)

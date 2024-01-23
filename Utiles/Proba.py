@@ -5,11 +5,6 @@ from bs4 import BeautifulSoup
 from dane import Horrors , Actions , Comedy , Sci_Fictions
 
 
-
-
-
-
-
 from orm.ddl import Movie, Base , User, Subscription
 from sqlalchemy.orm import sessionmaker
 db_params = sqlalchemy.URL.create(
@@ -25,7 +20,7 @@ engine = sqlalchemy.create_engine(db_params)
 
 connection = engine.connect()
 # Base.metadata.drop_all(bind=engine)
-Base.metadata.create_all(bind=engine)
+#Base.metadata.create_all(bind=engine)
 Session = sessionmaker(bind=engine)
 session = Session()
 
@@ -48,7 +43,7 @@ def dodaj_film():
 #     kategoria = "Horror"
 #     dodaj_film_baza_danych(nazwa, kategoria)
 #
-# # Actions
+# Actions
 # for action_movie in Actions:
 #     nazwa = action_movie.get("movie_name")
 #     kategoria = "Action"
@@ -127,15 +122,6 @@ def modyfikuj_film():
 
 #modyfikuj_film()
 
-dodaj_film_baza_danych("Mission: Impossible","Actions")
-
-def dodaj_rodzaj_subskrypcji_baza_danych(subcricption):
-    sub = Subscription(subcription=subcricption,)
-    session.add(sub)
-    session.commit()
-
-
-
 
 #---------------dodawanie użytkowniak_________
 def dodaj_użytkownika_baza_danych(nick, name, subscription, city):
@@ -179,3 +165,21 @@ def usuń_użytkownika():
 #usuń_użytkownika()
 def modyfikuj_użytkownika():
     wyświetl_użytkownika_baza_danych()
+
+    user_to_change = input("Podaj nick użytkwonika do zamiany -  ")
+    nick = session.query(User).filter_by(nick =user_to_change).first()
+    if nick:
+        nowe_imie = input("Podaj nowe imie: ")
+        nowa_subskrypcja = input("Podaj nazwe subkrypcji: ")
+        nowe_miasto = input("Podaj  nazwe nowego miasta: ")
+        nick.subskrypcja =nowa_subskrypcja
+        nick.miasto = nowe_miasto
+        print(f' Imie uzytkownika {user_to_change} zostało zamieniony {nowe_imie}')
+        print(f' Subsrypcja uzytkownika {user_to_change} została zamieniona {nowa_subskrypcja}')
+        print(f' Miasto użytkownika {user_to_change} został zamieniony {nowe_miasto}')
+    else:
+        print(f' Nie ma takiego uzytkownika')
+# wyświetl_użytkownika_baza_danych()
+# wyświetl_wszystkie_filmy()
+
+modyfikuj_użytkownika()
