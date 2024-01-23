@@ -1,9 +1,10 @@
-
 import requests
 import folium
 import sqlalchemy
 from bs4 import BeautifulSoup
-
+from dane import Horrors , Actions , Comedy , Sci_Fictions
+from orm.ddl import Movie, Base , User, Subscription
+from sqlalchemy.orm import sessionmaker
 db_params = sqlalchemy.URL.create(
     drivername='postgresql+psycopg2',
     username= 'postgres',
@@ -16,77 +17,139 @@ db_params = sqlalchemy.URL.create(
 engine = sqlalchemy.create_engine(db_params)
 
 connection = engine.connect()
-#dodawanie uzytkownika
-# def dodaj_uzytkownika_bazadanych(name, city, nick, subscription, film_category, movies_watched):
-#     query_text = """
-#     INSERT INTO public.my_table (nick, name, city, subscription, film_category, movies_watched)
-#     VALUES (:nick, :name, :city, :subscription, :film_category, :movies_watched)
-#     """
-#     sql_query = sqlalchemy.text(query_text)
-#
-#     connection.execute(sql_query, {
-#         'nick': nick,
-#         'name': name,
-#         'city': city,
-#         'subscription': subscription,
-#         'film_category': film_category,
-#         'movies_watched': movies_watched
-#     })
-#
-#     connection.commit()
+# Base.metadata.drop_all(bind=engine)
+#Base.metadata.create_all(bind=engine)
+Session = sessionmaker(bind=engine)
+session = Session()
 
-# def dodaj_użytkownika():
-#     nick = input('Podaj nick użytkownika - ')
-#     name = input('Podaj imię - ')
-#     city = input('Podaj miasto - ')
-#     subscription = input('Podaj rodzaj subskrypcji - ')
+def dodaj_film_baza_danych(movie_name,category):
+    movie = Movie(movie_name=movie_name,category=category)
+    session.add(movie)
+    session.commit()
+def dodaj_film():
+    movie_name = input("Nazwa filmu: ")
+    category = input("Nazwa kategori:")
+    dodaj_film_baza_danych(movie_name,category)
+# # Horrors
+# for horror_movie in Horrors:
+#     nazwa = horror_movie.get("movie_name")
+#     kategoria = "Horror"
+#     dodaj_film_baza_danych(nazwa, kategoria)
 #
+# Actions
+# for action_movie in Actions:
+#     nazwa = action_movie.get("movie_name")
+#     kategoria = "Action"
+#     dodaj_film_baza_danych(nazwa, kategoria)
 #
-#     sql_query = sqlalchemy.text("SELECT * FROM my_table WHERE nick=:nick")
+# # Comedy
+# for comedy_movie in Comedy:
+#     nazwa = comedy_movie.get("movie_name")
+#     kategoria = "Comedy"
+#     dodaj_film_baza_danych(nazwa, kategoria)
 #
-#     result = connection.execute(sql_query, {'nick': nick}).all()
-#
-#     if not result:
-#         dodaj_uzytkownika_bazadanych(name, city, nick, subscription)
-#     else:
-#         print('Podany nick już istnieje')
-#         dodaj_użytkownika()
-#WYSWIETLANIE LISTY UZYTKOWNIKOW
-def pokaz_liste_uzytkownikow():
-    sql_query_1 = sqlalchemy.text(f"SELECT * FROM my_table")
-    result= connection.execute(sql_query_1).all()
-    for user in result:
-     #   print(user[0] + " nick " +user[3]+" jest z miasta "+ user[1] + " liczba jego postów - "+ str(user[2])   )
-        print("Informacje na temat użytkownika: " +"Nick: " + user[0] + " Imię: " + user[1], "Rodzaj subskrypcji: " +"Miejscowość: " +user[2]
-              + user[3] + " Najczęściej oglądane kategorie: " + user[5] + " Obejrzane filmy: " + user[5])
+# # Sci_Fictions
+# for sci_fi_movie in Sci_Fictions:
+#     nazwa = sci_fi_movie.get("movie_name")
+#     kategoria = "Sci-Fi"
+#     dodaj_film_baza_danych(nazwa, kategoria)
 
+def wyświetl_wszystkie_filmy():
+    movie_list = session.query(Movie).all()
+    session.commit()
+    for movie in movie_list:
+        print(movie.movie_name +str(" -"), movie.category)
 
-#usuwanie
-def usun_uzytkownika_bazadanych(nick):
-    query_text = "DELETE FROM public.my_table my_table WHERE  nick = :nick"
-    sql_query_1 = sqlalchemy.text(query_text)
-    connection.execute(sql_query_1, {'nick':nick})
-    connection.commit()
+def usuń_film_baza_danych (movie_name):
+    while True:
+        movie = session.query(Movie).filter_by(movie_name=movie_name).first()
+        if movie_name == "1":
+            break
+        if movie:
+            session.delete(movie)
+            session.commit()
+            print(f'Film {movie_name} został usunięty')
+            break
+        else:
+            print(f'Film {movie_name} nie istnieje')
+            movie_name = input('Podaj poprawna nazwe filmu: \n'
+                  'Wpisz - 1 aby wyjść \n')
+            if movie_name == "1":
+                break
+def usuń_film():
+    wyświetl_wszystkie_filmy()
+    movie_name_to_delete = input("Podaj film do usunięcia - ")
+    usuń_film_baza_danych(movie_name_to_delete)
+def modyfikuj_film():
+    wyświetl_wszystkie_filmy()
 
-def usun_uzytkownika():
-    nick = input ("Podaj nick uzytkownika do usuniecia - ")
-    usun_uzytkownika_bazadanych(nick)
+    movie_name_to_change = input("Podaj film do zmiany - ")
+    movie = session.query(Movie).filter_by(movie_name=movie_name_to_change).first()
 
-# Modyfikacja uzytkownika
-def modyfikuj_uzytkownika_bazadanych(nick, new_name, new_city, subscription_type,new_movies_watched, new_film_category):
-    query_text = "UPDATE public.my_table SET name = :new_name, city = :new_city, subscription = :subscription_type, movies_watched = :new_movies_watched, film_category = :new_film_category WHERE nick = :nick"
-    sql_query_1 = sqlalchemy.text(query_text)
-    connection.execute(sql_query_1, {'nick':nick, 'new_name':new_name, 'new_city': new_city, 'subscription_type':subscription_type, 'new_movies_watched': new_movies_watched, 'new_film_category':new_film_category})
-    connection.commit()
+    if movie:
+        nowa_nazwa_filmu = input("Podaj nową nazwę filmu - ")
+        nowa_kategoria = input("Podaj nową kategorię filmu - ")
 
-def modyfikuj_uzytkownika():
-    nick = input('Wprowadź nick użytkownika do modyfikacji: ')
-    new_name= input("Wprowadz nowe imie: ")
-    new_city = input('Wprowadz nowe miasto: ')
-    subscription_type = input('Podaj typ subskrypcji: ')
-    new_movies_watched = input('Podaj nazwe obejrzanego filmu: ')
-    new_film_category = input('Podaj kategorie obejrzanych filmów: ')
-    modyfikuj_uzytkownika_bazadanych(nick,new_name,new_city,subscription_type, new_movies_watched, new_film_category)
+        movie.movie_name = nowa_nazwa_filmu
+        movie.category = nowa_kategoria
+        session.commit()
+        print(f'Film {movie_name_to_change} został zmieniony na {nowa_nazwa_filmu}.')
+        print(f'Kategoria filmu {movie_name_to_change} została zmieniona na {nowa_kategoria}.')
+    else:
+        print(f'Film {movie_name_to_change} nie istnieje w bazie danych.')
+def dodaj_użytkownika_baza_danych(nick, name, subscription, city):
+    user = User(nick=nick, name=name, subscription=subscription, city= city)
+    session.add(user)
+    session.commit()
+def dodaj_użytkownika():
+    nick = input('Podaj nick użytkownika: ')
+    name = input('Podaj imie uzytkwonika: ')
+    subscription = input('Podaj subskrypcje uzytkownika: ')
+    city = input('Podaj miasto uzytkownika: ')
+    dodaj_użytkownika_baza_danych(nick, name, subscription, city)
+def wyświetl_użytkownika_baza_danych():
+    users_list =session.query(User).all()
+    session.commit()
+    for user in users_list:
+        print("Nick: " + user.nick,"Imię: " + user.name,"Subskrypcja: " + user.subscription, "Miasto: " + user.city)
+#wyświetl_dodaj_użytkownika_baza_danych()
+def usuń_użytkownika_baza_danych(nick):
+    while True:
+        nick_del = session.query(User).filter_by(nick=nick).first()
+        if nick == "1":
+            break
+        if nick_del:
+            session.delete(nick_del)
+            session.commit()
+            print(f'Użytkownik {nick} został usunięty')
+            break
+        else:
+            print(f'Użytkownik {nick} nie istnieje')
+            nick = input('Podaj poprawna nazwe filmu: \n'
+                  'Wpisz - 1 aby wyjść \n')
+            if nick == "1":
+                break
+def usuń_użytkownika():
+    wyświetl_użytkownika_baza_danych()
+    user_to_delete = input("Podaj nick użytkownika do usunięcia - ")
+    usuń_użytkownika_baza_danych(user_to_delete)
+#usuń_użytkownika()
+def modyfikuj_użytkownika():
+    wyświetl_użytkownika_baza_danych()
+
+    user_to_change = input("Podaj nick użytkwonika do zamiany -  ")
+    nick = session.query(User).filter_by(nick =user_to_change).first()
+    if nick:
+        nowe_imie = input("Podaj nowe imie: ")
+        nowa_subskrypcja = input("Podaj nazwe subkrypcji: ")
+        nowe_miasto = input("Podaj  nazwe nowego miasta: ")
+        nick.subskrypcja =nowa_subskrypcja
+        nick.miasto = nowe_miasto
+        print(f' Imie uzytkownika {user_to_change} zostało zamieniony {nowe_imie}')
+        print(f' Subsrypcja uzytkownika {user_to_change} została zamieniona {nowa_subskrypcja}')
+        print(f' Miasto użytkownika {user_to_change} został zamieniony {nowe_miasto}')
+    else:
+        print(f' Nie ma takiego uzytkownika')
 def get_coordinates_of_(city:str)->list[float, float]:
 
     adres_URL = f'https://pl.wikipedia.org/wiki/{city}'
@@ -107,9 +170,9 @@ def get_coordinates_of_(city:str)->list[float, float]:
 
 def get_map_one_user():
     nick = input('Podaj nick uzytkownika do generowania mapy - ')
-    sql_query_1 = sqlalchemy.text(f"SELECT * FROM my_table WHERE nick = '{nick}'")
+    sql_query_1 = sqlalchemy.text(f"SELECT * FROM user2323 WHERE nick = '{nick}'")
     result = connection.execute(sql_query_1).first()
-    city_str = result[2]
+    city_str = result[4]
 
     city =get_coordinates_of_(city_str)
     map = folium.Map(
@@ -119,14 +182,14 @@ def get_map_one_user():
     )
     folium.Marker(
        location=city,
-        popup=f"Użytkownik - {result[0]}\n"
-              f"Miejscowość - {str(result[2])}\n"
+        popup=f"Użytkownik - {result[2]}\n"
+              f"Miejscowość - {str(result[4])}\n"
               f"Rodzaj subskrypcji - {result[3]}\n"
     ).add_to(map)
-    map.save(f"mapka_{result[0]}.html")
+    map.save(f"mapka_{result[1]}.html")
 
 def get_map_of():
-    sql_query_1 = sqlalchemy.text("SELECT * FROM my_table")
+    sql_query_1 = sqlalchemy.text("SELECT * FROM user2323")
     result = connection.execute(sql_query_1).all()
 
     map = folium.Map(
@@ -136,7 +199,7 @@ def get_map_of():
     )
 
     for user in result:
-        city_str = user[2]
+        city_str = user[4]
         city = get_coordinates_of_(city_str)
 
         folium.Marker(
@@ -170,20 +233,18 @@ def gui(users_list:list)->None:
                 break
             case "1":
                 print("Wyswietlam użytkowników")
-                pokaz_liste_uzytkownikow()
+                wyświetl_użytkownika_baza_danych()
             case "2":
 
                 print("Dodaje uzytkownika")
-                # dodaj_użytkownika()
+                dodaj_użytkownika()
 
-                print("Dodaje użytkownika")
-                #dodaj_użytkownika()
             case "3":
                 print("Usuwam użytkownika")
-                usun_uzytkownika()
+                usuń_film()
             case "4":
                 print("Modyfikuj użytkownika")
-                modyfikuj_uzytkownika()
+                modyfikuj_użytkownika()
             case '5':
                 print('Rysuję mape z użytkownikiem')
                 get_map_one_user()
