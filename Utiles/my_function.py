@@ -17,7 +17,7 @@ db_params = sqlalchemy.URL.create(
 engine = sqlalchemy.create_engine(db_params)
 
 connection = engine.connect()
-# Base.metadata.drop_all(bind=engine)
+#Base.metadata.drop_all(bind=engine)
 #Base.metadata.create_all(bind=engine)
 Session = sessionmaker(bind=engine)
 session = Session()
@@ -252,3 +252,4 @@ def gui(users_list:list)->None:
             case '6':
                 print("Rysuje mape z użytkownikami")
                 get_map_of()
+

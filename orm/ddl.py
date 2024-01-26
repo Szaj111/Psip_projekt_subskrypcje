@@ -1,7 +1,8 @@
 import sqlalchemy.orm
 import sqlalchemy
 Base = sqlalchemy.orm.declarative_base()
-
+from sqlalchemy.orm import relationship
+from sqlalchemy import ForeignKey
 class User(Base):
     __tablename__ = "user2323"
     id= sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.Sequence("user_id"),autoincrement=True, primary_key=True)
@@ -27,4 +28,7 @@ class Subscription(Base):
     __tablename__ = "subscriptions2323"
     id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.Sequence("subscription"), autoincrement=True, primary_key=True)
     subscription = sqlalchemy.Column(sqlalchemy.String)
-    movie_id = sqlalchemy.Column(sqlalchemy.Integer)
+    movie_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("movies.id"))
+
+    movie = relationship("Movie")
+

@@ -3,7 +3,7 @@ import folium
 import sqlalchemy
 from bs4 import BeautifulSoup
 from dane import Horrors , Actions , Comedy , Sci_Fictions
-
+from sqlalchemy import func, text, case
 
 from orm.ddl import Movie, Base , User, Subscription
 from sqlalchemy.orm import sessionmaker
@@ -20,19 +20,76 @@ engine = sqlalchemy.create_engine(db_params)
 
 connection = engine.connect()
 # Base.metadata.drop_all(bind=engine)
-#Base.metadata.create_all(bind=engine)
+# Base.metadata.create_all(bind=engine)
 Session = sessionmaker(bind=engine)
 session = Session()
 
 #--------dodawanie filmów GIT------------
-def dodaj_film_baza_danych(movie_name,category):
-    movie = Movie(movie_name=movie_name,category=category)
+def dodaj_film_baza_danych(movie_name, category):
+    movie = Movie(movie_name=movie_name, category=category)
     session.add(movie)
     session.commit()
+    dodaj_subkrypcje_baza_danych(movie.id)
+
+def dodaj_subkrypcje_baza_danych(movie_id):
+    subscription_type = input("Typ subskrypcji: ")
+    subscription = Subscription(subscription=subscription_type, movie_id=movie_id)
+    session.add(subscription)
+    session.commit()
+
+
+def wyswietl_dostepne_subskrypcje():
+    subscriptions = (
+        session.query(
+            Subscription.subscription,
+            Movie.category,
+            func.STRING_AGG(Movie.movie_name, ', ').label('film_names')
+        )
+        .outerjoin(Movie, Subscription.movie_id == Movie.id)
+        .group_by(Subscription.subscription, Movie.category)
+        .order_by(Subscription.subscription, Movie.category)
+        .all()
+    )
+
+    current_subscription = None
+
+    for subscription, category, film_names in subscriptions:
+        if subscription != current_subscription:
+            if current_subscription is not None:
+                print('\n' + '-' * 50)  # oddzielanie roznych subrypcji
+            print(f"Subskrypcja: {subscription}")
+            current_subscription = subscription
+
+        if category:
+            print(f"  Kategoria: {category}, Filmy: {film_names}")
+        else:
+            print(f"  Kategoria: Brak przypisanego filmu")
+
+#wyswietl_dostepne_subskrypcje()
+def usun_subskrypcje_baza_danych(subscription_name):
+    subscriptions = session.query(Subscription).filter_by(subscription=subscription_name).all()
+
+    if subscriptions:
+        for subscription in subscriptions:
+            session.delete(subscription)
+        session.commit()
+        print(f"Wszystkie subskrypcje o nazwie {subscription_name} zostały usunięte.")
+    else:
+        print(f"Nie znaleziono subskrypcji o nazwie {subscription_name}.")
+
+
+def usun_subskrypcje():
+    wyswietl_dostepne_subskrypcje()
+    sub_to_delete = input("Podaj subskrypcje do usunięcia: ")
+    usun_subskrypcje_baza_danych(sub_to_delete)
+
+usun_subskrypcje()
 def dodaj_film():
     movie_name = input("Nazwa filmu: ")
     category = input("Nazwa kategori:")
-    dodaj_film_baza_danych(movie_name,category)
+    dodaj_film_baza_danych(movie_name, category)
+#dodaj_film()
+
 #dodaj_film()
 #^ działa
 
@@ -71,7 +128,7 @@ def wyświetl_wszystkie_filmy():
     session.commit()
     for movie in movie_list:
         print(movie.movie_name +str(" -"), movie.category)
-#wyświetl_wszystkie_filmy()
+wyświetl_wszystkie_filmy()
 
 # ---------------usuwanie filmow - GIT ----------------------
 def usuń_film_baza_danych (movie_name):
@@ -182,4 +239,7 @@ def modyfikuj_użytkownika():
 # wyświetl_użytkownika_baza_danych()
 # wyświetl_wszystkie_filmy()
 
-modyfikuj_użytkownika()
+#modyfikuj_użytkownika()
+
+# def dodaj_rodzaj_subskrpycji_baza_danych(subscription,):
+
