@@ -83,7 +83,26 @@ def usun_subskrypcje():
     sub_to_delete = input("Podaj subskrypcje do usunięcia: ")
     usun_subskrypcje_baza_danych(sub_to_delete)
 
-usun_subskrypcje()
+def zmien_typ_subskrypcji_baza_danych(subscription_name, nowy_typ):
+    subscriptions = session.query(Subscription).filter_by(subscription=subscription_name).all()
+
+    if subscriptions:
+        for subscription in subscriptions:
+            subscription.subscription = nowy_typ
+        session.commit()
+        print(f"Wszystkie subskrypcje o nazwie {subscription_name} zostały zmienione na {nowy_typ}.")
+    else:
+        print(f"Nie znaleziono subskrypcji o nazwie {subscription_name}.")
+
+def zmien_typ_subskrypcji():
+    wyswietl_dostepne_subskrypcje()
+    nazwa_subkrypcji = input("Podaj nazwę subkrypcji, której chcesz zmienić typ: ")
+    nowy_typ = input("Podaj nowy typ subkrypcji: ")
+    zmien_typ_subskrypcji_baza_danych(nazwa_subkrypcji, nowy_typ)
+    wyswietl_dostepne_subskrypcje()
+#zmien_typ_subskrypcji()
+
+
 def dodaj_film():
     movie_name = input("Nazwa filmu: ")
     category = input("Nazwa kategori:")
@@ -128,7 +147,7 @@ def wyświetl_wszystkie_filmy():
     session.commit()
     for movie in movie_list:
         print(movie.movie_name +str(" -"), movie.category)
-wyświetl_wszystkie_filmy()
+#wyświetl_wszystkie_filmy()
 
 # ---------------usuwanie filmow - GIT ----------------------
 def usuń_film_baza_danych (movie_name):
@@ -223,19 +242,25 @@ def usuń_użytkownika():
 def modyfikuj_użytkownika():
     wyświetl_użytkownika_baza_danych()
 
-    user_to_change = input("Podaj nick użytkwonika do zamiany -  ")
-    nick = session.query(User).filter_by(nick =user_to_change).first()
-    if nick:
-        nowe_imie = input("Podaj nowe imie: ")
-        nowa_subskrypcja = input("Podaj nazwe subkrypcji: ")
-        nowe_miasto = input("Podaj  nazwe nowego miasta: ")
-        nick.subskrypcja =nowa_subskrypcja
-        nick.miasto = nowe_miasto
-        print(f' Imie uzytkownika {user_to_change} zostało zamieniony {nowe_imie}')
-        print(f' Subsrypcja uzytkownika {user_to_change} została zamieniona {nowa_subskrypcja}')
-        print(f' Miasto użytkownika {user_to_change} został zamieniony {nowe_miasto}')
+    user_to_change = input("Podaj nick użytkownika do zamiany -  ")
+    user = session.query(User).filter_by(nick=user_to_change).first()
+
+    if user:
+        nowe_imie = input("Podaj nowe imię: ")
+        nowa_subskrypcja = input("Podaj nazwę subskrypcji: ")
+        nowe_miasto = input("Podaj nazwę nowego miasta: ")
+
+        user.name = nowe_imie
+        user.subscription = nowa_subskrypcja
+        user.city = nowe_miasto
+
+        session.commit()
+        print(f'Imię użytkownika {user_to_change} zostało zmienione na {nowe_imie}.')
+        print(f'Subskrypcja użytkownika {user_to_change} została zmieniona na {nowa_subskrypcja}.')
+        print(f'Miasto użytkownika {user_to_change} zostało zmienione na {nowe_miasto}.')
     else:
-        print(f' Nie ma takiego uzytkownika')
+        print(f'Nie ma takiego użytkownika o nicku {user_to_change}.')
+modyfikuj_użytkownika()
 # wyświetl_użytkownika_baza_danych()
 # wyświetl_wszystkie_filmy()
 
