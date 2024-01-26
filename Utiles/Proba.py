@@ -260,11 +260,68 @@ def modyfikuj_użytkownika():
         print(f'Miasto użytkownika {user_to_change} zostało zmienione na {nowe_miasto}.')
     else:
         print(f'Nie ma takiego użytkownika o nicku {user_to_change}.')
-modyfikuj_użytkownika()
-# wyświetl_użytkownika_baza_danych()
-# wyświetl_wszystkie_filmy()
-
 #modyfikuj_użytkownika()
 
-# def dodaj_rodzaj_subskrpycji_baza_danych(subscription,):
+#-------------------- CRUD uzytkownikow na podstawie subkrypcji
+def wyświetl_użytkownika_subkrypcja_baza_danych(subscription_name):
 
+    users = session.query(User).filter_by(subscription=subscription_name).all()
+    if users:
+        print(f'Użytkownicy o subskrypcji {subscription_name}:')
+        for user in users:
+            print(f'Nick: {user.nick}, Imię: {user.name}, Miasto: {user.city}')
+    else:
+        print(f'Nie znaleziono użytkowników o subskrypcji {subscription_name}.')
+def wyświetl_użytkownika_subkrypcja():
+    nazwa_sub = input("Podaj nazwe subkrypcji")
+    wyświetl_użytkownika_subkrypcja_baza_danych(nazwa_sub)
+#wyświetl_użytkownika_subkrypcja()
+def usun_uzytkownika_z_subskrypcji_baza_danych(subscription_name, nick_to_delete):
+    user_to_delete = session.query(User).filter_by(subscription=subscription_name, nick=nick_to_delete).first()
+
+    if user_to_delete:
+        session.delete(user_to_delete)
+        session.commit()
+        print(f'Użytkownik o nicku {nick_to_delete} został usunięty z subskrypcji {subscription_name}.')
+    else:
+        print(f'Nie znaleziono użytkownika o nicku {nick_to_delete} i subskrypcji {subscription_name}.')
+
+def usun_uzytkownika_z_subskrypcji():
+    wyświetl_użytkownika_baza_danych()
+    sub_to_delete = input("Podaj nazwe subkrypcji: ")
+    user_to_delete = input("Podaj nick użytkownika do usunięcia: ")
+    usun_uzytkownika_z_subskrypcji_baza_danych(sub_to_delete, user_to_delete)
+    wyświetl_użytkownika_baza_danych()
+
+def modyfikuj_uzytkownika_po_subskrypcji_baza_danych(subscription_name):
+    users = session.query(User).filter_by(subscription=subscription_name).all()
+
+    if users:
+        print(f'Użytkownicy o subskrypcji {subscription_name}:')
+        for user in users:
+            print(f'Nick: {user.nick}, Imię: {user.name}, Miasto: {user.city}')
+
+        nick_to_edit = input("Podaj nick użytkownika do edycji: ")
+        user_to_edit = session.query(User).filter_by(subscription=subscription_name, nick=nick_to_edit).first()
+
+        if user_to_edit:
+            nowe_imie = input("Podaj nowe imię: ")
+            nowe_miasto = input("Podaj nowe miasto: ")
+
+            user_to_edit.name = nowe_imie
+            user_to_edit.city = nowe_miasto
+
+            session.commit()
+            print(f'Dane użytkownika o nicku {nick_to_edit} zostały zaktualizowane.')
+        else:
+            print(f'Nie znaleziono użytkownika o nicku {nick_to_edit} i subskrypcji {subscription_name}.')
+    else:
+        print(f'Nie znaleziono użytkowników o subskrypcji {subscription_name}.')
+
+
+def modyfikuj_uzytkownika_po_subskrypcji():
+    wyświetl_użytkownika_baza_danych()
+    sub = input("Podaj subkrypcje użytkownika do zamiany: ")
+    modyfikuj_uzytkownika_po_subskrypcji_baza_danych(sub)
+    wyświetl_użytkownika_baza_danych()
+#modyfikuj_uzytkownika_po_subskrypcji()
