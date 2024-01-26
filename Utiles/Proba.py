@@ -128,7 +128,7 @@ def wyświetl_wszystkie_filmy():
     session.commit()
     for movie in movie_list:
         print(movie.movie_name +str(" -"), movie.category)
-#wyświetl_wszystkie_filmy()
+wyświetl_wszystkie_filmy()
 
 # ---------------usuwanie filmow - GIT ----------------------
 def usuń_film_baza_danych (movie_name):
