@@ -1,2 +1,2 @@
-from Utiles.my_function import pchorFix
-pchorFix()
+from Utiles.my_function import pchorFlix
+pchorFlix()

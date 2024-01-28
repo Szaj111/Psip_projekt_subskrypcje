@@ -1068,5 +1068,5 @@ def logowanie():
         print("Niepoprawne dane, spróbuj ponownie")
         logowanie()
 
-def pchorFix():
+def pchorFlix():
     logowanie()
