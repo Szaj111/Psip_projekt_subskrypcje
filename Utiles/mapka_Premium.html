@@ -25,7 +25,7 @@
             <meta name="viewport" content="width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
             <style>
-                #map_0473ce9c7ec54831393162481986cc5b {
+                #map_8603f2240ba7413f58e016ac3ed27ade {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -39,18 +39,18 @@
 <body>
     
     
-            <div class="folium-map" id="map_0473ce9c7ec54831393162481986cc5b" ></div>
+            <div class="folium-map" id="map_8603f2240ba7413f58e016ac3ed27ade" ></div>
         
 </body>
 <script>
     
     
-            var map_0473ce9c7ec54831393162481986cc5b = L.map(
-                "map_0473ce9c7ec54831393162481986cc5b",
+            var map_8603f2240ba7413f58e016ac3ed27ade = L.map(
+                "map_8603f2240ba7413f58e016ac3ed27ade",
                 {
-                    center: [54.04, 21.758889],
+                    center: [52.3, 21.0],
                     crs: L.CRS.EPSG3857,
-                    zoom: 14,
+                    zoom: 7,
                     zoomControl: true,
                     preferCanvas: false,
                 }
@@ -60,31 +60,52 @@
 
         
     
-            var tile_layer_f93c9673d2dd6f7ee54118d57fcbe3d6 = L.tileLayer(
+            var tile_layer_85d0f078a0a21fb707a11287cdd5d5a0 = L.tileLayer(
                 "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
                 {"attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors", "detectRetina": false, "maxNativeZoom": 19, "maxZoom": 19, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
             );
         
     
-            tile_layer_f93c9673d2dd6f7ee54118d57fcbe3d6.addTo(map_0473ce9c7ec54831393162481986cc5b);
+            tile_layer_85d0f078a0a21fb707a11287cdd5d5a0.addTo(map_8603f2240ba7413f58e016ac3ed27ade);
         
     
-            var marker_4395a910dcf6364084f72df2d6d6c9a2 = L.marker(
-                [54.04, 21.758889],
+            var marker_cbf7c1df3fe620bd8e3466cc197c820a = L.marker(
+                [52.231061, 19.364342],
                 {}
-            ).addTo(map_0473ce9c7ec54831393162481986cc5b);
+            ).addTo(map_8603f2240ba7413f58e016ac3ed27ade);
         
     
-        var popup_996775cfe7ed8f6b94a303cd3d473e87 = L.popup({"maxWidth": "100%"});
+        var popup_5678cdddabe6a20bbdf7d8d8d991cf3a = L.popup({"maxWidth": "100%"});
 
         
             
-                var html_849ea09906b17760e46a7207094af8d2 = $(`<div id="html_849ea09906b17760e46a7207094af8d2" style="width: 100.0%; height: 100.0%;">Użytkownik - Piotrek Miejscowość - Giżycko Rodzaj subskrypcji - Basic </div>`)[0];
-                popup_996775cfe7ed8f6b94a303cd3d473e87.setContent(html_849ea09906b17760e46a7207094af8d2);
+                var html_39384e414a91b6583d70c6fa4a64003e = $(`<div id="html_39384e414a91b6583d70c6fa4a64003e" style="width: 100.0%; height: 100.0%;">Użytkownik: Sziszi Miejscowość: Kutno Rodzaj subskrypcji: Premium </div>`)[0];
+                popup_5678cdddabe6a20bbdf7d8d8d991cf3a.setContent(html_39384e414a91b6583d70c6fa4a64003e);
             
         
 
-        marker_4395a910dcf6364084f72df2d6d6c9a2.bindPopup(popup_996775cfe7ed8f6b94a303cd3d473e87)
+        marker_cbf7c1df3fe620bd8e3466cc197c820a.bindPopup(popup_5678cdddabe6a20bbdf7d8d8d991cf3a)
+        ;
+
+        
+    
+    
+            var marker_62e6bac3ce29bd3deda0d1c7db111500 = L.marker(
+                [54.213889, 21.741389],
+                {}
+            ).addTo(map_8603f2240ba7413f58e016ac3ed27ade);
+        
+    
+        var popup_b4ddead8a25b555ee96a317830eaf223 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_72f3743f70335e4ec93b9f68010c8aa9 = $(`<div id="html_72f3743f70335e4ec93b9f68010c8aa9" style="width: 100.0%; height: 100.0%;">Użytkownik: Baran Miejscowość: Węgorzewo Rodzaj subskrypcji: Premium </div>`)[0];
+                popup_b4ddead8a25b555ee96a317830eaf223.setContent(html_72f3743f70335e4ec93b9f68010c8aa9);
+            
+        
+
+        marker_62e6bac3ce29bd3deda0d1c7db111500.bindPopup(popup_b4ddead8a25b555ee96a317830eaf223)
         ;
 
         

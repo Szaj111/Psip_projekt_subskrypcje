@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_dbf5d9581aa1e6fcca7f6b28fdc3ddba {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_dbf5d9581aa1e6fcca7f6b28fdc3ddba" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_dbf5d9581aa1e6fcca7f6b28fdc3ddba = L.map(
+                "map_dbf5d9581aa1e6fcca7f6b28fdc3ddba",
+                {
+                    center: [52.3, 21.0],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 7,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_fdeb28a50ceec3c359881e19aaa4b837 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors", "detectRetina": false, "maxNativeZoom": 19, "maxZoom": 19, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            );
+        
+    
+            tile_layer_fdeb28a50ceec3c359881e19aaa4b837.addTo(map_dbf5d9581aa1e6fcca7f6b28fdc3ddba);
+        
+    
+            var marker_127ab91379829100fbf12a3fd2efa63a = L.marker(
+                [52.232222, 21.008333],
+                {}
+            ).addTo(map_dbf5d9581aa1e6fcca7f6b28fdc3ddba);
+        
+    
+        var popup_10d67b2d0a3a69b99742bd47902831cd = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_5aa623d9d9d2340b99b0bad14a89bf75 = $(`<div id="html_5aa623d9d9d2340b99b0bad14a89bf75" style="width: 100.0%; height: 100.0%;">Użytkownik: user2 Miejscowość: Warszawa Rodzaj subskrypcji: Basic </div>`)[0];
+                popup_10d67b2d0a3a69b99742bd47902831cd.setContent(html_5aa623d9d9d2340b99b0bad14a89bf75);
+            
+        
+
+        marker_127ab91379829100fbf12a3fd2efa63a.bindPopup(popup_10d67b2d0a3a69b99742bd47902831cd)
+        ;
+
+        
+    
+    
+            var marker_52fc9b849ba87c3bcc0c0392c2789e61 = L.marker(
+                [52.231061, 19.364342],
+                {}
+            ).addTo(map_dbf5d9581aa1e6fcca7f6b28fdc3ddba);
+        
+    
+        var popup_5b2257fca106bb16d46737ddad60574b = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_e3663b2db96c7782ce8f56cb6e1ff591 = $(`<div id="html_e3663b2db96c7782ce8f56cb6e1ff591" style="width: 100.0%; height: 100.0%;">Użytkownik: Sziszi Miejscowość: Kutno Rodzaj subskrypcji: Premium </div>`)[0];
+                popup_5b2257fca106bb16d46737ddad60574b.setContent(html_e3663b2db96c7782ce8f56cb6e1ff591);
+            
+        
+
+        marker_52fc9b849ba87c3bcc0c0392c2789e61.bindPopup(popup_5b2257fca106bb16d46737ddad60574b)
+        ;
+
+        
+    
+    
+            var marker_882ada682333695c7b6a9652b104def8 = L.marker(
+                [54.213889, 21.741389],
+                {}
+            ).addTo(map_dbf5d9581aa1e6fcca7f6b28fdc3ddba);
+        
+    
+        var popup_5d5f0cc61e7f8df51a25f588591702fc = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_9457f7948ae7528369e936d72f525a1f = $(`<div id="html_9457f7948ae7528369e936d72f525a1f" style="width: 100.0%; height: 100.0%;">Użytkownik: Baran Miejscowość: Węgorzewo Rodzaj subskrypcji: Premium </div>`)[0];
+                popup_5d5f0cc61e7f8df51a25f588591702fc.setContent(html_9457f7948ae7528369e936d72f525a1f);
+            
+        
+
+        marker_882ada682333695c7b6a9652b104def8.bindPopup(popup_5d5f0cc61e7f8df51a25f588591702fc)
+        ;
+
+        
+    
+</script>
+</html>
