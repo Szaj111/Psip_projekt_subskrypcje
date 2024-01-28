@@ -1062,4 +1062,13 @@ def gui():
                 print("Wyświetl menu generowania map")
                 gui_maps()
 
-gui()
+def logowanie():
+    print("Witaj w NetPchor proszę podać dane do logowania")
+    login = input("Podaj login: ")
+    password = input("Podaj hasło: ")
+    if login == "Admin" and password =="123":
+        gui()
+    else:
+        print("Niepoprawne dane, spróbuj ponownie")
+        logowanie()
+

@@ -1,3 +1,3 @@
-from Utiles.my_function import gui
+from Utiles.my_function import gui, logowanie
 from dane import users_list
-gui()
+logowanie()
