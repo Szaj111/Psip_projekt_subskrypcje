@@ -177,9 +177,6 @@ def usuń_film_baza_danych(session, movie_name):
             if movie_name == "1":
                 break
 
-# def usuń_film():
-#     movie_name = input("Podaj nazwe filmu do usunięcia ")
-#     usuń_film_baza_danych(movie_name=movie_name)
 
 def usuń_film():
     wyświetl_wszystkie_filmy()
@@ -915,7 +912,6 @@ def get_map_for_category_baza_danych(category_name: str):
         .filter(sqlalchemy.and_(movie_alias.category == category_name, Movies_watched.category == category_name))
         .all()
     )
-
     if result:
         map = folium.Map(
             location=[52.3, 21.0],
@@ -1072,3 +1068,5 @@ def logowanie():
         print("Niepoprawne dane, spróbuj ponownie")
         logowanie()
 
+def pchorFix():
+    logowanie()

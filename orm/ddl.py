@@ -1,6 +1,6 @@
 import sqlalchemy.orm
 import sqlalchemy
-Base = sqlalchemy.orm.declarative_base()
+Base = sqlalchemy.orm.declarative_base() # tworzenie istancji declarative_base służy do definiowania modeli
 from sqlalchemy.orm import relationship
 from sqlalchemy import ForeignKey
 class User(Base):
